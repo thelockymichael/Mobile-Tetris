@@ -59,7 +59,7 @@ public class Group : MonoBehaviour
         if (!isValidGridPos())
         {
            Debug.Log("GAME OVER");
-           Grid.GameOver();
+           GameManager.GameOver();
            Destroy(gameObject);
         }
     }
@@ -101,7 +101,7 @@ public class Group : MonoBehaviour
         }
 
         // Rotate
-        else if (InputDevice.DPadUp.WasPressed)
+        else if (InputDevice.DPadUp.WasPressed && !this.gameObject.CompareTag("SquareShape"))
         {
             transform.Rotate(0, 0, -90);
 
@@ -113,6 +113,33 @@ public class Group : MonoBehaviour
                 // It's not valid. revert.
                 transform.Rotate(0, 0, 90);
         }
+
+        else if (InputDevice.Action1.WasPressed && !this.gameObject.CompareTag("SquareShape"))
+        {
+            transform.Rotate(0, 0, -90);
+
+            // See if valid
+            if (isValidGridPos())
+                // It's valid. Update grid.
+                updateGrid();
+            else
+                // It's not valid. revert.
+                transform.Rotate(0, 0, 90);
+        }
+
+        else if (InputDevice.Action2.WasPressed && !this.gameObject.CompareTag("SquareShape"))
+        {
+            transform.Rotate(0, 0, 90);
+
+            // See if valid
+            if (isValidGridPos())
+                // It's valid. Update grid.
+                updateGrid();
+            else
+                // It's not valid. revert.
+                transform.Rotate(0, 0, 90);
+        }
+
 
         // Move Downwards and Fall
         else if (InputDevice.DPadDown.WasPressed ||

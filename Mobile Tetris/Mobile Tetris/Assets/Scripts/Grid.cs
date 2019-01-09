@@ -2,12 +2,13 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 
 public class Grid : MonoBehaviour
 {
+    static public Grid instance;
     //public static OnScreenNotification instance;
     //public static GameObject scoreText;
-    public static int Score;
     public static Text gameOverText;
 
     private IEnumerator coroutine;
@@ -33,9 +34,9 @@ public class Grid : MonoBehaviour
     {
         for (int x = 0; x < w; ++x)
         {
-            Score = Score + 10;
-            Debug.Log("decreaseRow" + Score);
-            SetCountText();
+            GameManager.AddPoints();
+            //GameManager.Score += 10;
+           // GameManager.Instance.Save();
             Destroy(grid[x, y].gameObject);
             grid[x, y] = null;
         }
@@ -90,44 +91,16 @@ public class Grid : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        Score = 0;
-        SetCountText();
-        GameObject gameOverText = GameObject.Find("/Canvas/gameOverText");
-        gameOverText.GetComponent<Text>().text = "";
-    }
-
-    public static void SetCountText()
-    {
-        GameObject scoreText = GameObject.Find("/Canvas/scoreText");
-        scoreText.GetComponent<Text>().text = "Score : " + Score.ToString();
-        Debug.Log(scoreText);
-        /* if (count >= 12)
-         {
-             winText.text = "You Win!";
-         }*/
-    }
-
-    public static void GameOver()
-    {
-        GameObject gameOverText = GameObject.Find("/Canvas/gameOverText");
-        gameOverText.GetComponent<Text>().text = "Game Over";
        
-     // StartCoroutine("GameOverDelay");
     }
 
-    void Awake()
-    {
-       //gameOverText = this;
-    }
+    
 
-    public static IEnumerator GameOverDelay()
-    {
-        yield return new WaitForSeconds(2);
-    }
+
 
     // Update is called once per frame
     void Update()
-    {
+        {
 
+        }
     }
-}
