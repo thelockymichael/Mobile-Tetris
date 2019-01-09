@@ -14,8 +14,10 @@ public class MainMenuManager : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-       //PlayerPrefs.GetInt("HighScore");
-        hiscoreText.text = "Hiscore : " + GameManager.HighScore.ToString();
+        hiscoreText.text = "High Score: " + PlayerPrefs.GetInt("HighScore", 0).ToString();
+     
+        //PlayerPrefs.GetInt("HighScore");
+        //hiscoreText.text =  GameManager.HighScore.ToString();
        // HighScore.GetComponent<Text>().text = PlayerPrefs.GetInt("HighScore", 0).ToString();
         settingsMenu.SetActive(false);
     }

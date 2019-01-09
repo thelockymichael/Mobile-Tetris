@@ -99,8 +99,25 @@ public class GameManager : MonoBehaviour
 
     }
 
+    public static void GameOver()
+    {
+        GameObject gameOverText = GameObject.Find("/Canvas/gameOverText");
+        gameOverText.GetComponent<Text>().text = "Game Over";
+        if (Score > PlayerPrefs.GetInt("HighScore", 0))
+        {
+            PlayerPrefs.SetInt("HighScore", Score);
 
+            GameObject HighScore = GameObject.Find("/Canvas/highScoreText");
+            HighScore.GetComponent<Text>().text = "Hiscore: " + Score.ToString();
+            //  HighScore.GetComponent<Text>().text = scoreString;
+            Debug.Log("Congratulations on new Score");
+            GameObject newHighScoreText = GameObject.Find("/Canvas/newHighScoreText");
+            newHighScoreText.GetComponent<Text>().text = "New High \n Score!";
+        }
+        DoCoroutine();
+    }
 
+    /*
     public static void GameOver()
     {
         GameObject gameOverText = GameObject.Find("/Canvas/gameOverText");
@@ -117,7 +134,7 @@ public class GameManager : MonoBehaviour
             newHighScoreText.GetComponent<Text>().text = "New High \n Score!";
         }
         DoCoroutine();
-    }
+    }*/
 
     public void SetHighScore()
     {
