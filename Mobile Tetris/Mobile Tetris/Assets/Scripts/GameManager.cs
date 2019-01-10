@@ -7,10 +7,16 @@ using UnityEngine.SceneManagement;
 
 public class GameManager : MonoBehaviour
 {
-    public GameObject MusicManager;
+    // Audio
+    public GameObject soundControlButton;
+    public Sprite audioOffSprite;
+    public Sprite audioOnSprite;
+
+   // public GameObject MusicManager;
     public GameObject pauseMenu;
     public GameObject settingsMenu;
     public GameObject gameOverMenu;
+    public GameObject InControl;
 
     public static string scoreString;
 
@@ -22,18 +28,40 @@ public class GameManager : MonoBehaviour
 
     public static int HighScore;
 
+
+    //Audio
+
+        public void SoundControl()
+    {
+        if(AudioListener.pause == true)
+        {
+            AudioListener.pause = false;
+            soundControlButton.GetComponent<Image>().sprite = audioOnSprite;
+        }
+        else
+        {
+            AudioListener.pause = true;
+            soundControlButton.GetComponent<Image>().sprite = audioOffSprite;
+        }
+
+        
+    }
+    
+
     // Start is called before the first frame update
     public void PauseGame()
     {
-        MusicManager.SetActive(false);
+       // MusicManager.SetActive(false);
         pauseMenu.SetActive(true);
+        InControl.SetActive(false);
         Time.timeScale = 0f;
     }
 
     public void ResumeGame()
     {
-        MusicManager.SetActive(true);
+      //  MusicManager.SetActive(true);
         pauseMenu.SetActive(false);
+        InControl.SetActive(true);
         Time.timeScale = 1f;
     }
 
@@ -57,6 +85,14 @@ public class GameManager : MonoBehaviour
 
     void Start()
     {
+        if (AudioListener.pause == true)
+        {
+            soundControlButton.GetComponent<Image>().sprite = audioOffSprite;
+        }
+        else
+        {
+            soundControlButton.GetComponent<Image>().sprite = audioOnSprite;
+        }
         Score = 0;
         GameObject newHighScoreText = GameObject.Find("/Canvas/newHighScoreText");
         newHighScoreText.GetComponent<Text>().text = "";
@@ -103,40 +139,68 @@ public class GameManager : MonoBehaviour
     {
         GameObject gameOverText = GameObject.Find("/Canvas/gameOverText");
         gameOverText.GetComponent<Text>().text = "Game Over";
-        if (Score > PlayerPrefs.GetInt("HighScore", 0))
+        if (Score > HighScore)
         {
-            PlayerPrefs.SetInt("HighScore", Score);
+            HighScore = Score;
 
-            GameObject HighScore = GameObject.Find("/Canvas/highScoreText");
-            HighScore.GetComponent<Text>().text = "Hiscore: " + Score.ToString();
+            PlayerPrefs.SetInt("HighScore", HighScore);
+            GameObject HighScore1 = GameObject.Find("/Canvas/highScoreText");
+            HighScore1.GetComponent<Text>().text = "Hiscore: " + Score.ToString();
             //  HighScore.GetComponent<Text>().text = scoreString;
             Debug.Log("Congratulations on new Score");
             GameObject newHighScoreText = GameObject.Find("/Canvas/newHighScoreText");
             newHighScoreText.GetComponent<Text>().text = "New High \n Score!";
         }
+        if (Score < PlayerPrefs.GetInt("HighScore"))//
+        {
+            PlayerPrefs.SetInt("HighScore0", Score);//save new score
+            //  secondHigh.text = "Second Highscore" + PlayerPrefs.GetInt("Highscore0");// display
+        }
         DoCoroutine();
     }
 
-    /*
-    public static void GameOver()
-    {
-        GameObject gameOverText = GameObject.Find("/Canvas/gameOverText");
-        gameOverText.GetComponent<Text>().text = "Game Over";
-        if (Score > PlayerPrefs.GetInt("HighScore", 0))
+        /* GameObject gameOverText = GameObject.Find("/Canvas/gameOverText");
+         gameOverText.GetComponent<Text>().text = "Game Over";
+         if (Score > PlayerPrefs.GetInt("HighScore", 0))
+         {
+             PlayerPrefs.SetInt("HighScore", Score);
+
+             GameObject HighScore = GameObject.Find("/Canvas/highScoreText");
+             HighScore.GetComponent<Text>().text = "Hiscore: " + Score.ToString();
+             //  HighScore.GetComponent<Text>().text = scoreString;
+             Debug.Log("Congratulations on new Score");
+             GameObject newHighScoreText = GameObject.Find("/Canvas/newHighScoreText");
+             newHighScoreText.GetComponent<Text>().text = "New High \n Score!";
+         }
+         if(Score > PlayerPrefs.GetInt("HighScore"))
+         {
+             PlayerPrefs.SetInt("HighScore0", Score);
+
+         }
+
+         DoCoroutine();
+     }
+     */
+        /*
+        public static void GameOver()
         {
-            PlayerPrefs.SetInt("HighScore", Score);
+            GameObject gameOverText = GameObject.Find("/Canvas/gameOverText");
+            gameOverText.GetComponent<Text>().text = "Game Over";
+            if (Score > PlayerPrefs.GetInt("HighScore", 0))
+            {
+                PlayerPrefs.SetInt("HighScore", Score);
 
-            GameObject HighScore = GameObject.Find("/Canvas/highScoreText");
-            HighScore.GetComponent<Text>().text = "Hiscore: " + Score.ToString();
-          //  HighScore.GetComponent<Text>().text = scoreString;
-            Debug.Log("Congratulations on new Score");
-            GameObject newHighScoreText = GameObject.Find("/Canvas/newHighScoreText");
-            newHighScoreText.GetComponent<Text>().text = "New High \n Score!";
-        }
-        DoCoroutine();
-    }*/
+                GameObject HighScore = GameObject.Find("/Canvas/highScoreText");
+                HighScore.GetComponent<Text>().text = "Hiscore: " + Score.ToString();
+              //  HighScore.GetComponent<Text>().text = scoreString;
+                Debug.Log("Congratulations on new Score");
+                GameObject newHighScoreText = GameObject.Find("/Canvas/newHighScoreText");
+                newHighScoreText.GetComponent<Text>().text = "New High \n Score!";
+            }
+            DoCoroutine();
+        }*/
 
-    public void SetHighScore()
+        public void SetHighScore()
     {
 
     }
